@@ -34,6 +34,7 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+		trace("the fuck");
 		super.update();
 	}	
 }
