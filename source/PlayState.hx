@@ -1,7 +1,7 @@
 package;
 
 import Player.SnakeGrid;
-
+import Player;
 import Player.GridPosition;
 import flixel.util.FlxColor;
 import flixel.addons.display.FlxGridOverlay;
@@ -33,6 +33,9 @@ class PlayState extends FlxState
         setupBackground();
         setupGrid();
 
+        var testApple = new Apple(_grid);
+        testApple.GridPosition = new GridPosition(10,10);
+        add(testApple);
 	}
 
     private function setupGrid()
@@ -74,12 +77,17 @@ class PlayState extends FlxState
         {
             _sinceLastTick = 0;
             _snake.updateSnake();
+
+            if(_grid.getObjectAt(_snake.GridPosition))
+            {
+
+
+            }
         }
 
 
         if(FlxG.keys.justReleased.SPACE)
         {
-            add(_snake.addSegment());
 
         }
 	}

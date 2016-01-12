@@ -79,6 +79,15 @@ class GridObject extends FlxSprite
     }
 }
 
+class Apple extends GridObject
+{
+    public function new(grid:SnakeGrid,X:Float = 0, Y:Float = 0, ?SimpleGraphic:Dynamic)
+    {
+        super(grid);
+        loadGraphic("assets/images/APPLE.png");
+    }
+}
+
 class Player extends GridObject
 {
     public var Direction:Direction;
