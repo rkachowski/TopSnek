@@ -45,7 +45,7 @@ class PlayState extends FlxState
         _snake = new Player(_grid);
         add(_snake);
         _grid.moveGridObject(_snake,new GridPosition(5,5));
-        add(_snake.addSegment());
+//        add(_snake.addSegment());
     }
     private function setupBackground()
     {
@@ -54,7 +54,7 @@ class PlayState extends FlxState
         add(bg);
         var grid = FlxGridOverlay.create(40,40,FlxG.width, FlxG.height);
         grid.alpha = 0.5;
-        add(grid);
+//        add(grid);
     }
 	
 	/**

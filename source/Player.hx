@@ -1,3 +1,4 @@
+import flixel.util.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.addons.display.FlxNestedSprite;
 import flixel.FlxG;
@@ -107,9 +108,12 @@ class Player extends GridObject
     public function new(grid:SnakeGrid,X:Float = 0, Y:Float = 0, ?SimpleGraphic:Dynamic)
     {
         super(grid, X, Y);
-        Direction = Right;
 
+        Direction = Right;
+        loadGraphic("assets/images/HEAD.png");
         _snakeSegments = new Array<GridObject>();
+        this.origin.x = 20;
+        this.origin.y = 20;
     }
 
     public function addSegment()
@@ -121,10 +125,19 @@ class Player extends GridObject
             gridPosition = _snakeSegments[_snakeSegments.length-1].GridPosition;
 
         var segment = new GridObject(_grid);
-        segment.GridPosition = gridPosition;
-        segment.makeGraphic(_grid.GridWidth,_grid.GridHeight,FlxColor.WHITE);
+        _grid.moveGridObject(segment, gridPosition);
 
         _snakeSegments.push(segment);
+
+        //make previously last segment a body piece
+
+        if(_snakeSegments.length > 1)
+        {
+            _snakeSegments[_snakeSegments.length-2].makeGraphic(_grid.GridWidth,_grid.GridHeight,FlxColor.WHITE);
+        }
+
+        _snakeSegments[_snakeSegments.length-1].loadGraphic("assets/images/TAIL.png");
+
         return segment;
     }
 
@@ -145,14 +158,43 @@ class Player extends GridObject
 
     public function updateSnake()
     {
-        _grid.moveGridObject(this, nextPosition());
-
-        for(n in 0..._snakeSegments.length-1)
+        if(_snakeSegments.length > 0)
         {
-            _grid.moveGridObject(_snakeSegments[n], _snakeSegments[n+1].GridPosition );
+            var n = _snakeSegments.length;
+            while(n-- > 1)
+            {
+                _grid.moveGridObject(_snakeSegments[n], _snakeSegments[n-1].GridPosition );
+                _snakeSegments[n].angle = _snakeSegments[n-1].angle;
+            }
+
+            _snakeSegments[0].GridPosition = this.GridPosition;
+            _snakeSegments[0].angle = this.angle;
         }
 
-        _snakeSegments[_snakeSegments.length - 1].GridPosition = this.GridPosition;
+        if(_snakeSegments.length > 2)
+        {
+            _snakeSegments[_snakeSegments.length  - 1].angle = _snakeSegments[_snakeSegments.length  - 2].angle;
+        }
+
+        _grid.moveGridObject(this, nextPosition());
+
+        switch(this.Direction)
+        {
+            case Left:
+                angle = 180;
+            flipY = true;
+
+            case Up:
+                angle = 270;
+                flipY = false;
+
+            case Down:
+                angle = 90;
+                flipY = false;
+            case Right:
+                angle = 0;
+                flipY = false;
+        }
     }
 
     override public function update()
