@@ -20,6 +20,11 @@ class GridPosition
         x = X;
         y = Y;
     }
+
+    public function toString():String
+    {
+        return "x : "+this.x+" y : "+this.y;
+    }
 }
 
 class SnakeGrid
@@ -56,6 +61,11 @@ class SnakeGrid
         object.GridPosition = newPosition;
         addGridObject(object);
     }
+
+    public function getObjectAt(position:GridPosition):GridObject
+    {
+        return _cells[position.x][position.y];
+    }
 }
 
 class GridObject extends FlxSprite
@@ -79,7 +89,7 @@ class GridObject extends FlxSprite
     }
 }
 
-class Apple extends GridObject
+class Food extends GridObject
 {
     public function new(grid:SnakeGrid,X:Float = 0, Y:Float = 0, ?SimpleGraphic:Dynamic)
     {
@@ -118,23 +128,28 @@ class Player extends GridObject
         return segment;
     }
 
-    public function updateSnake()
+    public function nextPosition():GridPosition
     {
         switch(this.Direction)
         {
             case Left:
-                this.GridPosition = new GridPosition(this.GridPosition.x - 1, this.GridPosition.y);
+                return new GridPosition(this.GridPosition.x - 1, this.GridPosition.y);
             case Up:
-                this.GridPosition = new GridPosition(this.GridPosition.x, this.GridPosition.y-1);
+                return new GridPosition(this.GridPosition.x, this.GridPosition.y-1);
             case Down:
-                this.GridPosition = new GridPosition(this.GridPosition.x, this.GridPosition.y+1);
+                return new GridPosition(this.GridPosition.x, this.GridPosition.y+1);
             case Right:
-                this.GridPosition = new GridPosition(this.GridPosition.x + 1, this.GridPosition.y);
+                return new GridPosition(this.GridPosition.x + 1, this.GridPosition.y);
         }
+    }
+
+    public function updateSnake()
+    {
+        _grid.moveGridObject(this, nextPosition());
 
         for(n in 0..._snakeSegments.length-1)
         {
-            _snakeSegments[n].GridPosition = _snakeSegments[n+1].GridPosition;
+            _grid.moveGridObject(_snakeSegments[n], _snakeSegments[n+1].GridPosition );
         }
 
         _snakeSegments[_snakeSegments.length - 1].GridPosition = this.GridPosition;

@@ -33,8 +33,8 @@ class PlayState extends FlxState
         setupBackground();
         setupGrid();
 
-        var testApple = new Apple(_grid);
-        testApple.GridPosition = new GridPosition(10,10);
+        var testApple = new Food(_grid);
+        _grid.moveGridObject(testApple, new GridPosition(10,10));
         add(testApple);
 	}
 
@@ -76,19 +76,23 @@ class PlayState extends FlxState
         if(_sinceLastTick >= _tick)
         {
             _sinceLastTick = 0;
-            _snake.updateSnake();
-
-            if(_grid.getObjectAt(_snake.GridPosition))
+            trace(_snake.GridPosition);
+            var object = _grid.getObjectAt(_snake.nextPosition());
+            if(object != null)
             {
-
-
+                if(Std.is(object, Food))
+                {
+                    remove(object);
+                    add(_snake.addSegment());
+                }
             }
-        }
 
+            _snake.updateSnake();
+        }
 
         if(FlxG.keys.justReleased.SPACE)
         {
-
+            add(_snake.addSegment());
         }
 	}
 }
