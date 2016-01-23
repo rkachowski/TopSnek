@@ -5,3 +5,4 @@ rc=$?; if [[ $rc != 0  ]]; then exit $rc; fi
 
 echo "gonna run on neko... "
 haxelib run lime run neko
+exit 0
