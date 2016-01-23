@@ -1,6 +1,5 @@
 package;
 
-import Player.SnakeGrid;
 import Player;
 import Player.GridPosition;
 import flixel.util.FlxColor;
@@ -12,13 +11,15 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
-
+import SnakeGrid.SnakeGrid;
+import GridObjects.Food;
 /**
  * A FlxState which can be used for the actual gameplay.
  */
 class PlayState extends FlxState
 {
     var _tick:Float = 0.2;
+
     var _sinceLastTick:Float = 0;
 
     var _grid:SnakeGrid;
