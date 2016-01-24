@@ -29,7 +29,10 @@ class GridPosition
     }
 }
 
+class SnakePart extends GridObject
+{
 
+}
 
 
 
@@ -58,7 +61,7 @@ class Player extends GridObject
         else
             gridPosition = _snakeSegments[_snakeSegments.length-1].GridPosition;
 
-        var segment = new GridObject(_grid);
+        var segment = new SnakePart(_grid);
         _grid.moveGridObject(segment, gridPosition);
 
         _snakeSegments.push(segment);

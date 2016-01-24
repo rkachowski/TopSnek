@@ -36,6 +36,11 @@ class SnakeGrid
         addGridObject(object);
     }
 
+    public function randomGridPosition():GridPosition
+    {
+        return new GridPosition(Std.random(_widthInCells), Std.random(_heightInCells));
+    }
+
     private function keepInsideMap(position:GridPosition):GridPosition
     {
         var newPosition = new GridPosition(position.x, position.y);

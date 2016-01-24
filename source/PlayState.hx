@@ -2,6 +2,8 @@ package;
 
 import Player;
 import Player.GridPosition;
+
+import Player.SnakePart;
 import flixel.util.FlxColor;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.util.FlxSpriteUtil;
@@ -13,6 +15,8 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import SnakeGrid.SnakeGrid;
 import GridObjects.Food;
+
+import GridObjects.GridObject;
 /**
  * A FlxState which can be used for the actual gameplay.
  */
@@ -46,16 +50,14 @@ class PlayState extends FlxState
         _snake = new Player(_grid);
         add(_snake);
         _grid.moveGridObject(_snake,new GridPosition(5,5));
-//        add(_snake.addSegment());
+        add(_snake.addSegment());
+        add(_snake.addSegment());
     }
     private function setupBackground()
     {
         var bg = new FlxSprite();
         bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         add(bg);
-        var grid = FlxGridOverlay.create(40,40,FlxG.width, FlxG.height);
-        grid.alpha = 0.5;
-//        add(grid);
     }
 	
 	/**
@@ -81,11 +83,7 @@ class PlayState extends FlxState
             var object = _grid.getObjectAt(_snake.nextPosition());
             if(object != null)
             {
-                if(Std.is(object, Food))
-                {
-                    remove(object);
-                    add(_snake.addSegment());
-                }
+                collideWith(object);
             }
 
             _snake.updateSnake();
@@ -96,4 +94,32 @@ class PlayState extends FlxState
             add(_snake.addSegment());
         }
 	}
+
+    function collideWith(object:GridObject)
+    {
+        if(Std.is(object, Food))
+        {
+            doEat(cast(object, Food));
+        }
+        if(Std.is(object, SnakePart))
+        {
+            trace("die!");
+        }
+    }
+
+    function doEat(object:Food)
+    {
+        var position = null;
+        while(position == null)
+        {
+            var p = _grid.randomGridPosition();
+            if(_grid.getObjectAt(p) == null)
+            {
+                position = p;
+            }
+        }
+
+        _grid.moveGridObject(object, position);
+        add(_snake.addSegment());
+    }
 }
