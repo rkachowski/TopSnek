@@ -1,4 +1,3 @@
-import flixel.util.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.addons.display.FlxNestedSprite;
 import flixel.FlxG;
@@ -95,6 +94,10 @@ class Player extends GridObject
 
     public function updateSnake()
     {
+        var prevPosition = GridPosition;
+        var prevAngle = angle;
+        _grid.moveGridObject(this, nextPosition());
+
         if(_snakeSegments.length > 0)
         {
             var n = _snakeSegments.length;
@@ -104,8 +107,8 @@ class Player extends GridObject
                 _snakeSegments[n].angle = _snakeSegments[n-1].angle;
             }
 
-            _snakeSegments[0].GridPosition = this.GridPosition;
-            _snakeSegments[0].angle = this.angle;
+            _snakeSegments[0].GridPosition = prevPosition;
+            _snakeSegments[0].angle = prevAngle;
         }
 
         if(_snakeSegments.length > 2)
@@ -113,7 +116,6 @@ class Player extends GridObject
             _snakeSegments[_snakeSegments.length  - 1].angle = _snakeSegments[_snakeSegments.length  - 2].angle;
         }
 
-        _grid.moveGridObject(this, nextPosition());
 
         switch(this.Direction)
         {
@@ -134,7 +136,7 @@ class Player extends GridObject
         }
     }
 
-    override public function update()
+    override public function update(elapsed:Float)
     {
         if(FlxG.keys.justReleased.DOWN)
         {

@@ -63,6 +63,11 @@ class SnakeGrid
         return newPosition;
     }
 
+    public function print()
+    {
+        trace(_cells);
+    }
+
     public function getObjectAt(position:GridPosition):GridObject
     {
         var safePosition = keepInsideMap(position);

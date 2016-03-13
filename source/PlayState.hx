@@ -1,18 +1,16 @@
 package;
 
+import Reflect;
 import Player;
 import Player.GridPosition;
 
 import Player.SnakePart;
 import flixel.util.FlxColor;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.util.FlxSpriteUtil;
+
+
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.util.FlxMath;
 import SnakeGrid.SnakeGrid;
 import GridObjects.Food;
 
@@ -72,14 +70,13 @@ class PlayState extends FlxState
 	/**
 	 * Function that is called once every frame.
 	 */
-	override public function update():Void
+	override public function update(elapsed:Float):Void
 	{
-		super.update();
+		super.update(elapsed);
         _sinceLastTick += FlxG.elapsed;
         if(_sinceLastTick >= _tick)
         {
             _sinceLastTick = 0;
-            trace(_snake.GridPosition);
             var object = _grid.getObjectAt(_snake.nextPosition());
             if(object != null)
             {
@@ -91,7 +88,8 @@ class PlayState extends FlxState
 
         if(FlxG.keys.justReleased.SPACE)
         {
-            add(_snake.addSegment());
+//            add(_snake.addSegment());
+            _grid.print();
         }
 	}
 
@@ -101,6 +99,7 @@ class PlayState extends FlxState
         {
             doEat(cast(object, Food));
         }
+
         if(Std.is(object, SnakePart))
         {
             trace("die!");
